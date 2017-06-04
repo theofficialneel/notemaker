@@ -49,7 +49,17 @@
           display: none;
         }
 	</style>
-	<script type="text/javascript">
+</head>
+<body>
+    <h1 class="heading">Note-Maker</h1>
+    <div class="entry">
+     <p>Create New Notes:</p>
+     <input type="text" id="adding" name="fillin">
+     <button type="button" onclick="creating()">Create</button>
+    </div>
+    <ul id="lists"></ul>
+  <script type="text/javascript">
+    var i = 0;
     function erase(){
       var q = this.id.replace("but","li");
       document.getElementById(q).style.display = "none";
@@ -61,23 +71,22 @@
         var e = document.getElementById("edit"+d);
         console.log(e);
     }
-		function creating(){
+    function creating(){
           var date = new Date();
-          var i = "" + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds();
           var a = document.getElementById("adding").value;
           var b = document.createTextNode(a);
           var l = document.createElement("li");
-          l.id = "li"+i;
+          l.id = "li"+i.toString();
           var x = document.createElement("button");
           x.textContent = "X";
-          x.id = "but"+i;
+          x.id = "but"+i.toString();
           var i = document.createElement("textarea");
-          i.id = "inp"+i;
+          i.id = "inp"+i.toString();
           i.className = "inputs";
           l.ondblclick = edit;
           var e = document.createElement("button");
           e.textContent = "Edit";
-          e.id = "edit"+i;
+          e.id = "edit"+i.toString();
           e.className = "edits";
           x.onclick = erase;
           l.appendChild(e);
@@ -87,15 +96,6 @@
           document.getElementById("lists").appendChild(l);
           i++;
         }
-	</script>
-</head>
-<body>
-    <h1 class="heading">Note-Maker</h1>
-    <div class="entry">
-     <p>Create New Notes:</p>
-     <input type="text" id="adding" name="fillin">
-     <button type="button" onclick="creating()">Create</button>
-    </div>
-    <ul id="lists"></ul>
+  </script>
 </body>
 </html>
