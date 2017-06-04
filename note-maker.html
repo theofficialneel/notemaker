@@ -18,10 +18,14 @@
         	width: 500px;
         	height: 30px;
         }
-        p{
+        p.mini{
         	font-size: 20px;
         	font-family: fantasy;
          }
+        p.mini1{
+          font-size: 15px;
+          font-family: verdana;
+        }
         div.entry{
            padding-left: 200px;
          }
@@ -42,7 +46,7 @@
         li button{
           float: right;
         }
-        .inputs{height: 150px;
+        .inputs{height: 100px;
           display: none;
         }
         .edits{
@@ -53,9 +57,10 @@
 <body>
     <h1 class="heading">Note-Maker</h1>
     <div class="entry">
-     <p>Create New Notes:</p>
+     <p class="mini">Create New Notes:</p>
      <input type="text" id="adding" name="fillin">
      <button type="button" onclick="creating()">Create</button>
+     <p class="mini1">Double click to edit</p>
     </div>
     <ul id="lists"></ul>
   <script type="text/javascript">
@@ -64,15 +69,27 @@
       var q = this.id.replace("but","li");
       document.getElementById(q).style.display = "none";
     }
+    function changer(){
+      var d = this.id.replace("edit","");
+      var k = document.getElementById("inp"+d.toString());
+      var l = document.getElementById("s"+d.toString());
+      l.textContent = k.value;
+      k.style.display = "none";
+      this.style.display = "none";
+  }
     function edit(){
         var d = this.id.replace("li","");
-        alert(d);
-        var i = document.getElementById("inp"+d);
-        var e = document.getElementById("edit"+d);
-        console.log(e);
+        var k = document.getElementById("inp"+d.toString());
+        var e = document.getElementById("edit"+d.toString());
+        k.style.display = "block";
+        e.style.display = "block";
+        var r1 = this.textContent;
+        var r2 = r1.slice(5);
+        k.textContent = r2;
+        k.focus();
+        e.onclick = changer;
     }
     function creating(){
-          var date = new Date();
           var a = document.getElementById("adding").value;
           var b = document.createTextNode(a);
           var l = document.createElement("li");
@@ -80,19 +97,22 @@
           var x = document.createElement("button");
           x.textContent = "X";
           x.id = "but"+i.toString();
-          var i = document.createElement("textarea");
-          i.id = "inp"+i.toString();
-          i.className = "inputs";
+          x.onclick = erase;
+          var t = document.createElement("textarea");
+          t.id = "inp"+i.toString();
+          t.className = "inputs";
           l.ondblclick = edit;
           var e = document.createElement("button");
           e.textContent = "Edit";
           e.id = "edit"+i.toString();
           e.className = "edits";
-          x.onclick = erase;
+          var s = document.createElement("span");
+          s.id = "s"+i;
           l.appendChild(e);
           l.appendChild(x);
-          l.appendChild(i);
-          l.appendChild(b);
+          l.appendChild(t);
+          s.appendChild(b);
+          l.appendChild(s);
           document.getElementById("lists").appendChild(l);
           i++;
         }
