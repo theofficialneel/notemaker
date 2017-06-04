@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>notes</title>
+	<style type="text/css">
+		body{
+			    background-image: url("notes.jpg");
+        }
+        .heading{
+        	        font-size: 70px;
+                  text-align: center;
+                  font-family: fantasy;
+                  letter-spacing: 1px;
+                  color: #f2ee0c;
+                  text-shadow: 2px 2px #000000;
+        }
+        #adding{
+        	width: 500px;
+        	height: 30px;
+        }
+        p{
+        	font-size: 20px;
+        	font-family: fantasy;
+         }
+        div.entry{
+           padding-left: 200px;
+         }
+        ul{list-style-type: none;}
+        ul li{
+            font-size: 18px;
+            font-family: "Times New Roman", Times, serif;
+            text-indent: 35px;
+            width: 230px;
+            height: 230px;
+            background-image: url("yellownote.jpg");
+            background-size: cover;
+            float: left;
+            margin-left: 10px;
+            margin-top: 5px;
+            box-shadow:  2px 2px 1px grey;
+        } 
+        li button{
+          float: right;
+        }
+        .inputs{height: 150px;
+          display: none;
+        }
+        .edits{
+          display: none;
+        }
+	</style>
+	<script type="text/javascript">
+    function erase(){
+      var q = this.id.replace("but","li");
+      document.getElementById(q).style.display = "none";
+    }
+    function edit(){
+        var d = this.id.replace("li","");
+        alert(d);
+        var i = document.getElementById("inp"+d);
+        var e = document.getElementById("edit"+d);
+        console.log(e);
+    }
+		function creating(){
+          var date = new Date();
+          var i = "" + date.getHours() + date.getMinutes() + date.getSeconds() + date.getMilliseconds();
+          var a = document.getElementById("adding").value;
+          var b = document.createTextNode(a);
+          var l = document.createElement("li");
+          l.id = "li"+i;
+          var x = document.createElement("button");
+          x.textContent = "X";
+          x.id = "but"+i;
+          var i = document.createElement("textarea");
+          i.id = "inp"+i;
+          i.className = "inputs";
+          l.ondblclick = edit;
+          var e = document.createElement("button");
+          e.textContent = "Edit";
+          e.id = "edit"+i;
+          e.className = "edits";
+          x.onclick = erase;
+          l.appendChild(e);
+          l.appendChild(x);
+          l.appendChild(i);
+          l.appendChild(b);
+          document.getElementById("lists").appendChild(l);
+          i++;
+        }
+	</script>
+</head>
+<body>
+    <h1 class="heading">Note-Maker</h1>
+    <div class="entry">
+     <p>Create New Notes:</p>
+     <input type="text" id="adding" name="fillin">
+     <button type="button" onclick="creating()">Create</button>
+    </div>
+    <ul id="lists"></ul>
+</body>
+</html>
