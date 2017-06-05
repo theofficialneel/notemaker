@@ -30,7 +30,7 @@
            padding-left: 200px;
          }
         ul{list-style-type: none;}
-        ul li{
+        .low_prior{          /*black shadow*/
             font-size: 18px;
             font-family: "Times New Roman", Times, serif;
             text-indent: 35px;
@@ -41,8 +41,34 @@
             float: left;
             margin-left: 10px;
             margin-top: 5px;
-            box-shadow:  2px 2px 1px grey;
+            box-shadow:  2px 2px 1px black;
         } 
+        .high_prior{        /*red shadow*/
+            font-size: 18px;
+            font-family: "Times New Roman", Times, serif;
+            text-indent: 35px;
+            width: 230px;
+            height: 230px;
+            background-image: url("yellownote.jpg");
+            background-size: cover;
+            float: left;
+            margin-left: 10px;
+            margin-top: 5px;
+            box-shadow:  2px 2px 1px red;
+        }
+        .med_prior{         /*blue shadow*/
+            font-size: 18px;
+            font-family: "Times New Roman", Times, serif;
+            text-indent: 35px;
+            width: 230px;
+            height: 230px;
+            background-image: url("yellownote.jpg");
+            background-size: cover;
+            float: left;
+            margin-left: 10px;
+            margin-top: 5px;
+            box-shadow:  2px 2px 1px blue;
+        }
         li button{
           float: right;
         }
@@ -59,6 +85,8 @@
           display: none;
         }
         li.hidden{display: none;}
+        .selecthide{display: none;}
+        .selectshow{display: block;}
   </style>
 </head>
 <body>
@@ -67,63 +95,86 @@
      <p class="mini">Create New Notes:</p>
      <input type="text" id="adding" name="fillin">
      <button type="button" id="createbut">Create</button>
-     <p class="mini1">Double click to edit</p>
+     <p class="mini1">Double click to edit|Change priority using edit|Red:high Blue:medium Black:low</p>
     </div>
     <ul id="lists"></ul>
+  <!--js-->
   <script type="text/javascript">
-    var i = 0;
     var createbut = document.getElementById("createbut");
-    createbut.addEventListener("click",creating);
-    function erase(){
+    createbut.addEventListener("click",creating); //to create new element
+    function erase(){                             //deleting function from x button
       var linode = this.parentNode;
       linode.className = "hidden";
     }
-    function changer(){
+    function changer(){                          //changing text in list element by edit
       var linode = this.parentNode;
       var txtarea = linode.childNodes[2];
       var spantxt = linode.childNodes[3];
-      spantxt.textContent = txtarea.value;
+      var select_prior = linode.childNodes[4];
+       select_prior.className = "selecthide";
+       spantxt.textContent = txtarea.value;
       txtarea.className = "inputhidden";
       this.className = "edithidden";
   }
+    function priorcolorchange(){               //called by change of priority
+      var linode = this.parentNode;
+      if(this.value==="high"){linode.className="high_prior";}  //priorities color change
+      else if(this.value==="medium"){linode.className="med_prior";}
+      else {linode.className="low_prior";}
+    }
     function edit(){
-        var txtarea = this.childNodes[2];
-        var editbut = this.childNodes[0];
-        var spantxt = this.childNodes[3];
+        var txtarea = this.childNodes[2]; //text area element
+        var editbut = this.childNodes[0]; //edit button
+        var spantxt = this.childNodes[3]; //span element
+        var select_prior = this.childNodes[4];  //select element
+        select_prior.className = "selectshow";
         txtarea.className = "inputshow";
         editbut.className = "editshow";
         var r = spantxt.textContent;
         txtarea.textContent = r;
         txtarea.focus();
         editbut.addEventListener("click",changer);
+        select_prior.addEventListener("change",priorcolorchange);
     }
     function creating(){
-          var a = document.getElementById("adding").value;
-          var txt = document.createTextNode(a);
-          var li = document.createElement("li");
-          li.id = "li"+i.toString();
-          var xbut = document.createElement("button");
-          xbut.textContent = "X";
-          xbut.id = "but"+i.toString();
-          xbut.addEventListener("click",erase);
-          var txtarea = document.createElement("textarea");
-          txtarea.id = "inp"+i.toString();
-          txtarea.className = "inputhidden";
-          li.addEventListener("dblclick",edit);
-          var editbut = document.createElement("button");
-          editbut.textContent = "Edit";
-          editbut.id = "edit"+i.toString();
-          editbut.className = "edithidden";
-          var s = document.createElement("span");
-          s.id = "s"+i;
-          li.appendChild(editbut);
-          li.appendChild(xbut);
+          var created_input = document.getElementById("adding").value;
+          var txt = document.createTextNode(created_input);
+           var li = document.createElement("li");
+            li.className = "low_prior";
+            li.addEventListener("dblclick",edit);
+           var x_button = document.createElement("button");
+            x_button.textContent = "X";
+            x_button.addEventListener("click",erase);
+           var txtarea = document.createElement("textarea");
+            txtarea.className = "inputhidden";
+           var edit_button = document.createElement("button");
+            edit_button.textContent = "Edit";
+            edit_button.className = "edithidden";
+           var s = document.createElement("span");
+          li.appendChild(edit_button);
+          li.appendChild(x_button);
           li.appendChild(txtarea);
           s.appendChild(txt);
           li.appendChild(s);
+           var select_prior = document.createElement("select");
+            select_prior.className = "selecthide";
+           var high_prior = document.createElement("option");
+            high_prior.value = "high";
+            high_prior.textContent = "high";
+           var med_prior = document.createElement("option");
+            med_prior.value = "medium";
+            med_prior.textContent = "medium";
+           var low_prior = document.createElement("option");
+            low_prior.value = "low";
+            low_prior.textContent = "low";
+          select_prior.appendChild(low_prior);
+          select_prior.appendChild(med_prior);
+          select_prior.appendChild(high_prior);
+          li.appendChild(select_prior);
           document.getElementById("lists").appendChild(li);
-          i++;
         }
+        //format of the list
+        //<li>edit,X,textarea,span(with text),select(with options)</li>
   </script>
 </body>
 </html>
