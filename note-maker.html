@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>notes</title>
-	<style type="text/css">
-		body{
-			    background-image: url("notes.jpg");
+  <title>notes</title>
+  <style type="text/css">
+    body{
+          background-image: url("notes.jpg");
         }
         .heading{
-        	        font-size: 70px;
+                  font-size: 70px;
                   text-align: center;
                   font-family: fantasy;
                   letter-spacing: 1px;
@@ -15,12 +15,12 @@
                   text-shadow: 2px 2px #000000;
         }
         #adding{
-        	width: 500px;
-        	height: 30px;
+          width: 500px;
+          height: 30px;
         }
         p.mini{
-        	font-size: 20px;
-        	font-family: fantasy;
+          font-size: 20px;
+          font-family: fantasy;
          }
         p.mini1{
           font-size: 15px;
@@ -46,74 +46,82 @@
         li button{
           float: right;
         }
-        .inputs{height: 100px;
+        .inputshow{height: 100px;
+          display: block; 
+        }
+        .editshow{
+          display: block;
+        }
+        .inputhidden{height: 100px;
           display: none;
         }
-        .edits{
+        .edithidden{
           display: none;
         }
-	</style>
+        li.hidden{display: none;}
+  </style>
 </head>
 <body>
     <h1 class="heading">Note-Maker</h1>
     <div class="entry">
      <p class="mini">Create New Notes:</p>
      <input type="text" id="adding" name="fillin">
-     <button type="button" onclick="creating()">Create</button>
+     <button type="button" id="createbut">Create</button>
      <p class="mini1">Double click to edit</p>
     </div>
     <ul id="lists"></ul>
   <script type="text/javascript">
     var i = 0;
+    var createbut = document.getElementById("createbut");
+    createbut.addEventListener("click",creating);
     function erase(){
-      var q = this.id.replace("but","li");
-      document.getElementById(q).style.display = "none";
+      var linode = this.parentNode;
+      linode.className = "hidden";
     }
     function changer(){
-      var d = this.id.replace("edit","");
-      var k = document.getElementById("inp"+d.toString());
-      var l = document.getElementById("s"+d.toString());
-      l.textContent = k.value;
-      k.style.display = "none";
-      this.style.display = "none";
+      var linode = this.parentNode;
+      var txtarea = linode.childNodes[2];
+      var spantxt = linode.childNodes[3];
+      spantxt.textContent = txtarea.value;
+      txtarea.className = "inputhidden";
+      this.className = "edithidden";
   }
     function edit(){
-        var d = this.id.replace("li","");
-        var k = document.getElementById("inp"+d.toString());
-        var e = document.getElementById("edit"+d.toString());
-        k.style.display = "block";
-        e.style.display = "block";
-        var r1 = this.textContent;
-        var r2 = r1.slice(5);
-        k.textContent = r2;
-        k.focus();
-        e.onclick = changer;
+        var txtarea = this.childNodes[2];
+        var editbut = this.childNodes[0];
+        var spantxt = this.childNodes[3];
+        txtarea.className = "inputshow";
+        editbut.className = "editshow";
+        var r = spantxt.textContent;
+        txtarea.textContent = r;
+        txtarea.focus();
+        editbut.addEventListener("click",changer);
     }
     function creating(){
           var a = document.getElementById("adding").value;
-          var b = document.createTextNode(a);
-          var l = document.createElement("li");
-          l.id = "li"+i.toString();
-          var x = document.createElement("button");
-          x.textContent = "X";
-          x.id = "but"+i.toString();
-          x.onclick = erase;
-          var t = document.createElement("textarea");
-          t.id = "inp"+i.toString();
-          t.className = "inputs";
-          l.ondblclick = edit;
-          var e = document.createElement("button");
-          e.textContent = "Edit";
-          e.id = "edit"+i.toString();
-          e.className = "edits";
+          var txt = document.createTextNode(a);
+          var li = document.createElement("li");
+          li.id = "li"+i.toString();
+          var xbut = document.createElement("button");
+          xbut.textContent = "X";
+          xbut.id = "but"+i.toString();
+          xbut.addEventListener("click",erase);
+          var txtarea = document.createElement("textarea");
+          txtarea.id = "inp"+i.toString();
+          txtarea.className = "inputhidden";
+          li.addEventListener("dblclick",edit);
+          var editbut = document.createElement("button");
+          editbut.textContent = "Edit";
+          editbut.id = "edit"+i.toString();
+          editbut.className = "edithidden";
           var s = document.createElement("span");
           s.id = "s"+i;
-          l.appendChild(e);
-          l.appendChild(x);
-          l.appendChild(t);
-          s.appendChild(b);
-          l.appendChild(s);
-          document.getElementById("lists").appendChild(l);
+          li.appendChild(editbut);
+          li.appendChild(xbut);
+          li.appendChild(txtarea);
+          s.appendChild(txt);
+          li.appendChild(s);
+          document.getElementById("lists").appendChild(li);
           i++;
         }
   </script>
